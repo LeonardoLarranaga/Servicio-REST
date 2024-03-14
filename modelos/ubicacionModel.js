@@ -1,3 +1,4 @@
+// simulación de bases de datos.
 const ubicacionBD = [
     {
         id: 1,
@@ -19,17 +20,22 @@ const ubicacionBD = [
     }
 ]
 
+// arreglo con las claves de las ubicaciones para verificación.
 const claves = Object.keys(ubicacionBD[0])
 
+// función que regresa todas las ubicaciones.
 const getAll = function() {
     return ubicacionBD
 }
 
+// función que regresa una ubicación mediante su Id.
 const getById = function(id) {
     return ubicacionBD.find((ubicacion) => ubicacion.id == id)
 }
 
+// función que ingresa una nueva ubicación hacia la base de datos.
 const postUbicacion = function(ubicacion) {
+    // se verifica el formato de la nueva ubicación mediante las claves.
     if (claves.every(clave => ubicacion.hasOwnProperty(clave))) {
         ubicacionBD.push(ubicacion)
     } else {
@@ -37,38 +43,50 @@ const postUbicacion = function(ubicacion) {
     }
 }
 
+// función que elimina una ubicación mediante su Id.
 const deleteUbicacion = function(id) {
+    // se busca el índice de la ubicación mediante su Id. Si no se encuentra, se regresa un error.
     const index = ubicacionBD.findIndex(ubicacion => ubicacion.id == id)
     if (index == -1) throw Error("Id no encontrado.")
     
+    // obtenemos la ubicación y la eliminamos.
     const ubicacion = ubicacionBD[index]
     ubicacionBD.splice(index, 1)
    
+    // se regresa la ubicación eliminada.
     return ubicacion
 }
 
+// función para reemplazar una ubicación con una nueva (modificada).
 const putUbicacion = function(id, ubicacionNueva) {
-    console.log(id)
+    // se busca el índice de la ubicación mediante su Id. Si no se encuentra, se regresa un error.
     const index = ubicacionBD.findIndex(ubicacion => ubicacion.id == id)
-    console.log(index)
     if (index == -1) throw Error("Id no encontrado.")
 
+    // se reemplaza la ubicación.
     ubicacionBD[index] = ubicacionNueva
     
+    // se regresa la ubicación modificada.
     return ubicacionNueva
 }
 
+// función para modificar ciertos parámetros de la ubicación.
 const patchUbicacion = function(id, body) {
+    // se busca el índice de la ubicación mediante su Id. Si no se encuentra, se regresa un error.
     const index = ubicacionBD.findIndex(ubicacion => ubicacion.id == id)
-
     if (index == -1) throw Error("Id no encontrado.")
+
+    // se verifica que los parámetros a modificar son válidos.
     if (!Object.keys(body).every(clave => claves.includes(clave))) throw Error("Formato inválido.")
 
+    // se modifica cada campo de la ubicación.
     for (const clave in body) ubicacionBD[index][clave] = body[clave]
 
+    // se regresa la ubicación modificada.
     return ubicacionBD[index]
 }
 
+// exportamos las funciones para el módulo.
 export default {
     getAll, getById,
     postUbicacion,

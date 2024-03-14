@@ -1,3 +1,4 @@
+// simulación de base de datos.
 const activoBD = [
     {
         id: 1,
@@ -91,37 +92,47 @@ const activoBD = [
     },
 ]
 
+// arreglo con las claves de los activos para verificación.
 const claves = Object.keys(activoBD[0])
 
+// función que regresa todos los activos.
 const getAll = function() {
     return activoBD
 }
 
+// función que regresa un activo mediante su Id.
 const getById = function(id) {
     return activoBD.find((activo) => activo.id == id)
 }
 
+// función que regresa un activo mediante su serie.
 const getBySerie = function(serie) {
     return activoBD.find((activo) => activo.serie == serie)
 }   
 
+// función que regresa un activo mediante su serieUABC.
 const getBySerieUABC = function(serieUABC) {
     return activoBD.find((activo) => activo.serieUABC == serieUABC)
 }
 
+// función que regresa los activos de un tipo.
 const getByTipo = function(tipo) {
     return activoBD.filter((activo) => activo.tipo == tipo)
 }
 
+// función que regresa los activos de una ubicación.
 const getByUbicacion = function(ubicacion) {
     return activoBD.filter((activo) => activo.ubicacion == ubicacion)
 }
 
+// función que regresa los activos de un responsable.
 const getByResponsable = function(responsable) {
     return activoBD.filter((activo) => activo.responsable == responsable)
 }
 
+// función que ingresa un nuevo activo a la base de datos.
 const postActivo = function(activo) {
+    // se verifica que tenga el formato correto mediante las claves.
     if (claves.every(clave => activo.hasOwnProperty(clave))) {
         activoBD.push(activo)
     } else {
@@ -129,36 +140,51 @@ const postActivo = function(activo) {
     }
 }
 
+// función que elimina un activo de la base de datos.
 const deleteActivo = function(id) {
+    // se busca el índice del activo mediante su Id. Si no se encuentra, se regresa un error.
     const index = activoBD.findIndex(activo => activo.id == id)
     if (index == -1) throw Error("Id no encontrado.")
 
+    // obtenemos el activo y lo eliminamos.
     const activo = activoBD[index]
     activoBD.splice(index, 1)
    
+    // se regresa el activo.
     return activo
 }
 
+// función que reemplaza un activo por uno nuevo (modificado).
 const putActivo = function(id, activoNuevo) {
+    // se busca el índice del activo mediante su Id. Si no se encuentra, se regresa un error.
     const index = activoBD.findIndex(activo => activo.id == id)
     if (index == -1) throw Error("Id no encontrado.")
 
+    // se coloca el nuevo activo en el índice.
     activoBD[index] = activoNuevo
     
+    // se regresa el activo modificado.
     return activoNuevo
 }
 
+// función que modifica ciertos parámetros de un activo.
 const patchActivo = function(id, body) {
-    const index = activoBD.findIndex(activo => activo.id == id)
+    // se busca el índice del activo mediante su Id. Si no se encuentra, se regresa un error.
 
+    const index = activoBD.findIndex(activo => activo.id == id)
     if (index == -1) throw Error("Id no encontrado.")
+
+    // se verifica que los parámetros a modificar son válidos.
     if (!Object.keys(body).every(clave => claves.includes(clave))) throw Error("Formato inválido.")
 
+    // se modifica cada campo del activo.
     for (const clave in body) activoBD[index][clave] = body[clave]
 
+    // se regresa el activo modificado.
     return activoBD[index]
 }
 
+// exportamos las funciones para el módulo.
 export default { 
     getAll, getById, getByResponsable, getBySerie, getBySerieUABC, getByTipo, getByUbicacion,
     postActivo, 
