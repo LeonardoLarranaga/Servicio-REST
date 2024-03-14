@@ -3,6 +3,7 @@ const app = express()
 const port = 4000
 
 import activo from "./controladores/activoController.js"
+import responsable from "./controladores/responsableController.js"
 
 app.listen(port, () => {
     console.log(`Servidor escuchando por el puerto: http://localhost:${port}`)
@@ -34,3 +35,18 @@ app.delete("/activo/:id", activo.deleteActivo)
 app.put("/activo/:id", activo.putActivo)
 
 app.patch("/activo/:id", activo.patchActivo)
+
+/*
+    Responsables
+*/
+app.get("/responsable", responsable.getAll)
+app.get("/responsable/id/:id", responsable.getById)
+app.get("/responsable/numeroEmpleado/:numeroEmpleado", responsable.getByNumeroEmpleado)
+
+app.post("/responsable", responsable.postResponsable)
+
+app.delete("/responsable/:id", responsable.deleteResponsable)
+
+app.put("/responsable/:id", responsable.putResponsable)
+
+app.patch("/responsable/:id", responsable.patchResponsable)

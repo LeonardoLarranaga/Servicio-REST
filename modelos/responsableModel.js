@@ -1,5 +1,3 @@
-import { response } from "express"
-
 const responsableBD = [
     {
         id: 1,
@@ -35,7 +33,8 @@ const getById = function(id) {
 }
 
 const getByNumeroEmpleado = function(numeroEmpleado) {
-    return responsableBD.find((responsableBD) => responsableBD.responsable == responsableBD)
+    console.log(numeroEmpleado)
+    return responsableBD.find((responsableBD) => responsableBD.numeroEmpleado == numeroEmpleado)
 }
 
 const postResponsable = function(responsable) {
@@ -83,3 +82,13 @@ export default {
     putResponsable,
     patchResponsable
 }
+
+/*
+{
+    id: 4,
+    numeroEmpleado: 2024,
+    nombre: "Luis Leonardo",
+    activos: [1, 2, 3],
+    imagen: "https://plus.unsplash.com/premium_photo-1661270464552-14596350963b?q=80&w=1170"
+}
+*/
