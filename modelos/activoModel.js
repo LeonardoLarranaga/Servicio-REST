@@ -91,6 +91,8 @@ const activoBD = [
     },
 ]
 
+const clavesEsperadas = ['id', 'serie', 'serieUABC', 'tipo', 'descripcion', 'ubicacion', 'responsable', 'imagen'];
+
 const getAll = function() {
     return activoBD
 }
@@ -101,7 +103,7 @@ const getById = function(id) {
 
 const getBySerie = function(serie) {
     return activoBD.find((activo) => activo.serie == serie)
-}
+}   
 
 const getBySerieUABC = function(serieUABC) {
     return activoBD.find((activo) => activo.serieUABC == serieUABC)
@@ -120,51 +122,57 @@ const getByResponsable = function(responsable) {
 }
 
 const postActivo = function(activo) {
-    activoBD.push(activo)
+    console.log(activo)
+    if (clavesEsperadas.every(clave => activo.hasOwnProperty(clave))) {
+        activoBD.push(activo)
+    } else {
+        throw Error("Formato inválido.")
+    }
 }
 
-const deleteActivo = function(activo) {
-    activoBD.splice(activoBD.indexOf(activo), 1)
+const deleteActivo = function(id) {
+    const index = activoBD.findIndex(activo => activo.id == id)
+    if (index == -1) throw Error("Id no encontrado.")
+    const activo = activoBD[index]
+    activoBD.splice(index, 1)
+   
+    return activo
 }
 
-const putActivo = function(activo, activoNuevo) {
-    activoBD[activoBD.indexOf(activo)] = activoNuevo
+const putActivo = function(id, activoNuevo) {
+    const index = activoBD.findIndex(activo => activo.id == id)
+    if (index== -1) throw Error("Id no encontrado.")
+    activoBD[index] = activoNuevo
+    
+    return activoNuevo
 }
 
-const patchActivoId = function(index, id) {
-    activoBD[index].id = id
-}
+const patchActivo = function(id, body) {
+    const index = activoBD.findIndex(activo => activo.id == id)
 
-const patchActivoSerie = function(index, serie) {
-    activoBD[index].serie = serie
-}
+    if (index == -1) throw Error("Id no encontrado.")
+    if (!Object.keys(body).every(clave => clavesEsperadas.includes(clave))) throw Error("Formato inválido.")
 
-const patchActivoSerieUABC = function(index, serieUABC) {
-    activoBD[index].serieUABC = serieUABC
-}
+    for (const clave in body) activoBD[index][clave] = body[clave]
 
-const patchActivoTipo = function(index, tipo) {
-    activoBD[index].tipo  = tipo
-}
-
-const patchActivoDescripcion = function(index, descripcion) {
-    activoBD[index].descripcion = descripcion
-}
-
-const patchActivoUbicacion = function(index, ubicacion) {
-    activoBD[index].ubicacion = ubicacion
-}
-
-const patchActivoResponsable = function(index, responsable) {
-    activoBD[index].responsable = responsable
-}
-
-const patchActivoImagen = function(index, imagen) {
-    activoBD[index].imagen = imagen
+    return activoBD[index]
 }
 
 export default { 
     getAll, getById, getByResponsable, getBySerie, getBySerieUABC, getByTipo, getByUbicacion,
     postActivo, deleteActivo, putActivo,
-    patchActivoDescripcion, patchActivoId, patchActivoImagen, patchActivoResponsable, patchActivoResponsable, patchActivoSerie, patchActivoSerieUABC, patchActivoTipo, patchActivoUbicacion
+    patchActivo
 }
+
+/*
+{
+        id: 10,
+        serie: "activo-10",
+        serieUABC: "UABC-activo-10",
+        tipo: "Generador de funciones",
+        descripcion: "Generador de distintos tipos de funciones.",
+        ubicacion: 3,
+        responsable: 1,
+        imagen: "https://images.unsplash.com/photo-1661660860311-dc26ed236d5f?q=80&w=1287"
+    }
+*/
