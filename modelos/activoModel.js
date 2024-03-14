@@ -122,7 +122,6 @@ const getByResponsable = function(responsable) {
 }
 
 const postActivo = function(activo) {
-    console.log(activo)
     if (clavesEsperadas.every(clave => activo.hasOwnProperty(clave))) {
         activoBD.push(activo)
     } else {
@@ -133,6 +132,7 @@ const postActivo = function(activo) {
 const deleteActivo = function(id) {
     const index = activoBD.findIndex(activo => activo.id == id)
     if (index == -1) throw Error("Id no encontrado.")
+
     const activo = activoBD[index]
     activoBD.splice(index, 1)
    
@@ -141,7 +141,8 @@ const deleteActivo = function(id) {
 
 const putActivo = function(id, activoNuevo) {
     const index = activoBD.findIndex(activo => activo.id == id)
-    if (index== -1) throw Error("Id no encontrado.")
+    if (index == -1) throw Error("Id no encontrado.")
+
     activoBD[index] = activoNuevo
     
     return activoNuevo
@@ -160,7 +161,9 @@ const patchActivo = function(id, body) {
 
 export default { 
     getAll, getById, getByResponsable, getBySerie, getBySerieUABC, getByTipo, getByUbicacion,
-    postActivo, deleteActivo, putActivo,
+    postActivo, 
+    deleteActivo, 
+    putActivo,
     patchActivo
 }
 

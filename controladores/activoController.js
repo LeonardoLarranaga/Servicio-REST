@@ -66,6 +66,8 @@ const patchActivo = async function(request, respond) {
 
 export default { 
     getAll, getById, getByResponsable, getBySerie, getBySerieUABC, getByTipo, getByUbicacion,
-    postActivo, deleteActivo, putActivo,
+    postActivo, 
+    deleteActivo, 
+    putActivo,
     patchActivo
 }

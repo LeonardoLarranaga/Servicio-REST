@@ -1,3 +1,5 @@
+import { response } from "express"
+
 const responsableBD = [
     {
         id: 1,
@@ -22,4 +24,62 @@ const responsableBD = [
     }
 ]
 
-export default responsableBD
+const clavesEsperadas = ["id", "numeroEmpleado", "nombre", "activos", "imagen"]
+
+const getAll = function() {
+    return responsableBD
+}
+
+const getById = function(id) {
+    return responsableBD.find((responsable) => responsable.id == id)
+}
+
+const getByNumeroEmpleado = function(numeroEmpleado) {
+    return responsableBD.find((responsableBD) => responsableBD.responsable == responsableBD)
+}
+
+const postResponsable = function(responsable) {
+    if (clavesEsperadas.every(clave => responsable.hasOwnProperty(clave))) {
+        responsableBD.push(responsable)
+    } else {
+        throw Error("Formato inválido.")
+    }
+}
+
+const deleteResponsable = function(id) {
+    const index = responsableBD.findIndex(responsable => responsable.id == id)
+    if (index == -1) throw Error("Id no encontrado.")
+    
+    const responsable = responsableBD[index]
+    responsableBD.splice(index, 1)
+   
+    return responsable
+}
+
+const putResponsable = function(id, responsableNuevo) {
+    const index = responsableBD.findIndex(responsable => responsable.id == id)
+    if (index == -1) throw Error("Id no encontrado.")
+
+    responsableBD[index] = responsableNuevo
+    
+    return responsableNuevo
+}
+
+const patchResponsable = function(id, body) {
+    const index = responsableBD.findIndex(responsable => responsable.id == id)
+
+    if (index == -1) throw Error("Id no encontrado.")
+    if (!Object.keys(body).every(clave => clavesEsperadas.includes(clave))) throw Error("Formato inválido.")
+
+    for (const clave in body) responsableBD[index][clave] = body[clave]
+
+    return responsableBD[index]
+}
+
+export default { 
+    getAll, getById, getByNumeroEmpleado,
+    postResponsable,
+    deleteResponsable,
+    putResponsable,
+    patchResponsable
+}
