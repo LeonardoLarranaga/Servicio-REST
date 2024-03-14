@@ -4,6 +4,7 @@ const port = 4000
 
 import activo from "./controladores/activoController.js"
 import responsable from "./controladores/responsableController.js"
+import ubicacion from "./controladores/ubicacionController.js"
 
 app.listen(port, () => {
     console.log(`Servidor escuchando por el puerto: http://localhost:${port}`)
@@ -50,3 +51,17 @@ app.delete("/responsable/:id", responsable.deleteResponsable)
 app.put("/responsable/:id", responsable.putResponsable)
 
 app.patch("/responsable/:id", responsable.patchResponsable)
+
+/*
+    Ubicaciones
+*/
+app.get("/ubicacion", ubicacion.getAll)
+app.get("/ubicacion/id/:id", ubicacion.getById)
+
+app.post("/ubicacion", ubicacion.postUbicacion)
+
+app.delete("/ubicacion/:id", ubicacion.deleteUbicacion)
+
+app.put("/ubicacion/:id", ubicacion.putUbicacion)
+
+app.patch("/ubicacion/:id", ubicacion.patchUbicacion)

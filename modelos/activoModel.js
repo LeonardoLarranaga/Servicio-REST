@@ -91,7 +91,7 @@ const activoBD = [
     },
 ]
 
-const clavesEsperadas = ['id', 'serie', 'serieUABC', 'tipo', 'descripcion', 'ubicacion', 'responsable', 'imagen'];
+const claves = Object.keys(activoBD[0])
 
 const getAll = function() {
     return activoBD
@@ -122,7 +122,7 @@ const getByResponsable = function(responsable) {
 }
 
 const postActivo = function(activo) {
-    if (clavesEsperadas.every(clave => activo.hasOwnProperty(clave))) {
+    if (claves.every(clave => activo.hasOwnProperty(clave))) {
         activoBD.push(activo)
     } else {
         throw Error("Formato inválido.")
@@ -152,7 +152,7 @@ const patchActivo = function(id, body) {
     const index = activoBD.findIndex(activo => activo.id == id)
 
     if (index == -1) throw Error("Id no encontrado.")
-    if (!Object.keys(body).every(clave => clavesEsperadas.includes(clave))) throw Error("Formato inválido.")
+    if (!Object.keys(body).every(clave => claves.includes(clave))) throw Error("Formato inválido.")
 
     for (const clave in body) activoBD[index][clave] = body[clave]
 

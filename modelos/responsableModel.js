@@ -22,7 +22,7 @@ const responsableBD = [
     }
 ]
 
-const clavesEsperadas = ["id", "numeroEmpleado", "nombre", "activos", "imagen"]
+const claves = Object.keys(responsableBD[0])
 
 const getAll = function() {
     return responsableBD
@@ -38,7 +38,7 @@ const getByNumeroEmpleado = function(numeroEmpleado) {
 }
 
 const postResponsable = function(responsable) {
-    if (clavesEsperadas.every(clave => responsable.hasOwnProperty(clave))) {
+    if (claves.every(clave => responsable.hasOwnProperty(clave))) {
         responsableBD.push(responsable)
     } else {
         throw Error("Formato inválido.")
@@ -68,7 +68,7 @@ const patchResponsable = function(id, body) {
     const index = responsableBD.findIndex(responsable => responsable.id == id)
 
     if (index == -1) throw Error("Id no encontrado.")
-    if (!Object.keys(body).every(clave => clavesEsperadas.includes(clave))) throw Error("Formato inválido.")
+    if (!Object.keys(body).every(clave => claves.includes(clave))) throw Error("Formato inválido.")
 
     for (const clave in body) responsableBD[index][clave] = body[clave]
 
